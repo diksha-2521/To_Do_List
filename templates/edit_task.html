@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Task
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Page Header -->
+
+    <div class="row mb-4">
+
+        <div class="col">
+
+            <h2 class="fw-bold">
+                Edit Task
+            </h2>
+
+            <p class="text-muted">
+                Update your task details and save your changes.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Edit Task Card -->
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-warning text-dark">
+
+                    <h4 class="mb-0">
+
+                        Update Task
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST">
+
+                        {{ form.hidden_tag() }}
+
+                        <!-- Task Title -->
+
+                        <div class="mb-3">
+
+                            {{ form.title.label(class="form-label fw-semibold") }}
+
+                            {{ form.title(class="form-control") }}
+
+                        </div>
+
+                        <!-- Description -->
+
+                        <div class="mb-3">
+
+                            {{ form.description.label(class="form-label fw-semibold") }}
+
+                            {{ form.description(class="form-control", rows="5") }}
+
+                        </div>
+
+                        <!-- Due Date / Priority / Category -->
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+
+                                {{ form.due_date.label(class="form-label fw-semibold") }}
+
+                                {{ form.due_date(class="form-control") }}
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                {{ form.priority.label(class="form-label fw-semibold") }}
+
+                                {{ form.priority(class="form-select") }}
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                {{ form.category.label(class="form-label fw-semibold") }}
+
+                                {{ form.category(class="form-select") }}
+
+                            </div>
+
+                        </div>
+
+                        <!-- Current Status -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+
+                                Current Status
+
+                            </label>
+
+                            <div>
+
+                                {% if task.completed %}
+
+                                    <span class="badge bg-success fs-6">
+
+                                        Completed
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-warning text-dark fs-6">
+
+                                        Pending
+
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                        <!-- Buttons -->
+
+                        <div class="d-flex justify-content-between">
+
+                            <a
+                                href="{{ url_for('routes.dashboard') }}"
+                                class="btn btn-outline-secondary">
+
+                                Cancel
+
+                            </a>
+
+                            {{ form.submit(
+                                class="btn btn-warning",
+                                value="Save Changes"
+                            ) }}
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

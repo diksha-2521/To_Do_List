@@ -1,0 +1,36 @@
+body{
+    background:#f8f9fa;
+}
+
+.card{
+    border:none;
+    border-radius:15px;
+}
+
+.card-body{
+    padding:2rem;
+}
+
+.navbar-brand{
+    font-size:1.4rem;
+}
+
+.btn{
+    border-radius:10px;
+}
+
+.form-control{
+    border-radius:10px;
+}
+
+.list-group-item{
+    padding:18px;
+}
+
+.hero-image{
+    max-height:450px;
+}
+
+footer{
+    margin-top:50px;
+}

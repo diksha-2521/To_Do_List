@@ -1,0 +1,568 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- ========================= -->
+    <!-- Dashboard Header -->
+    <!-- ========================= -->
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Welcome back,
+                {{ current_user.username }} 👋
+            </h2>
+
+            <p class="text-muted mb-0">
+                Stay productive by managing your daily tasks.
+            </p>
+
+        </div>
+
+        <div class="text-end mt-3 mt-md-0">
+
+            <span class="badge bg-primary fs-6">
+                {{ total_tasks }} Total Tasks
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- Statistics Cards -->
+    <!-- ========================= -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Total Tasks
+                    </h6>
+
+                    <h2 class="fw-bold">
+                        {{ total_tasks }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Completed
+                    </h6>
+
+                    <h2 class="text-success fw-bold">
+                        {{ completed_tasks }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Pending
+                    </h6>
+
+                    <h2 class="text-warning fw-bold">
+                        {{ total_tasks - completed_tasks }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Overdue
+                    </h6>
+
+                    <h2 class="text-danger fw-bold">
+                        {{ overdue_tasks }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- Progress Card -->
+    <!-- ========================= -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between">
+
+                <h5 class="mb-3">
+                    Task Completion
+                </h5>
+
+                <strong>
+                    {{ progress }}%
+                </strong>
+
+            </div>
+
+            <div class="progress" style="height:20px;">
+
+                <div
+                    class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                    role="progressbar"
+                    style="width: {{ progress }}%;">
+
+                    {{ progress }}%
+
+                </div>
+
+            </div>
+
+            <small class="text-muted">
+
+                {{ completed_tasks }}
+                of
+                {{ total_tasks }}
+                tasks completed.
+
+            </small>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- Search and Filter -->
+    <!-- ========================= -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <form method="GET">
+
+                <div class="row g-3">
+
+                    <div class="col-lg-4">
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="search"
+                            value="{{ request.args.get('search','') }}"
+                            placeholder="Search tasks...">
+
+                    </div>
+
+                    <div class="col-lg-2">
+
+                        <select
+                            class="form-select"
+                            name="priority">
+
+                            <option value="">Priority</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-lg-2">
+
+                        <select
+                            class="form-select"
+                            name="category">
+
+                            <option value="">Category</option>
+                            <option value="Work">Work</option>
+                            <option value="Study">Study</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Shopping">Shopping</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-lg-2">
+
+                        <select
+                            class="form-select"
+                            name="status">
+
+                            <option value="">Status</option>
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-lg-2 d-grid">
+
+                        <button
+                            class="btn btn-primary">
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- Create Task Card -->
+    <!-- ========================= -->
+
+    <div class="card shadow border-0 mb-5">
+
+        <div class="card-header bg-primary text-white">
+
+            <h4 class="mb-0">
+
+                Create New Task
+
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+
+                    {{ form.title.label(class="form-label fw-semibold") }}
+
+                    {{ form.title(class="form-control") }}
+
+                </div>
+
+                <div class="mb-3">
+
+                    {{ form.description.label(class="form-label fw-semibold") }}
+
+                    {{ form.description(class="form-control", rows="4") }}
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+
+                        {{ form.due_date.label(class="form-label fw-semibold") }}
+
+                        {{ form.due_date(class="form-control") }}
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        {{ form.priority.label(class="form-label fw-semibold") }}
+
+                        {{ form.priority(class="form-select") }}
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        {{ form.category.label(class="form-label fw-semibold") }}
+
+                        {{ form.category(class="form-select") }}
+
+                    </div>
+
+                </div>
+
+                <div class="d-grid">
+
+                    {{ form.submit(class="btn btn-success btn-lg") }}
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- Task List -->
+    <!-- ========================= -->
+
+    <div class="row">
+
+        <div class="col-12">
+
+            <h3 class="fw-bold mb-4">
+
+                Your Tasks
+
+            </h3>
+
+            {% if tasks %}
+
+                {% for task in tasks %}
+
+                <div class="card shadow-sm border-0 mb-3">
+
+                    <div class="card-body">
+
+                        <div class="row align-items-center">
+
+                            <!-- Left Section -->
+
+                            <div class="col-lg-8">
+
+                                <div class="d-flex align-items-center mb-2">
+
+                                    {% if task.completed %}
+
+                                        <h5 class="mb-0 text-decoration-line-through text-muted">
+
+                                            {{ task.title }}
+
+                                        </h5>
+
+                                    {% else %}
+
+                                        <h5 class="mb-0">
+
+                                            {{ task.title }}
+
+                                        </h5>
+
+                                    {% endif %}
+
+                                </div>
+
+                                {% if task.description %}
+
+                                <p class="text-muted mb-3">
+
+                                    {{ task.description }}
+
+                                </p>
+
+                                {% endif %}
+
+                                <!-- Priority Badge -->
+
+                                {% if task.priority == "High" %}
+
+                                    <span class="badge bg-danger me-2">
+
+                                        High Priority
+
+                                    </span>
+
+                                {% elif task.priority == "Medium" %}
+
+                                    <span class="badge bg-warning text-dark me-2">
+
+                                        Medium Priority
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-success me-2">
+
+                                        Low Priority
+
+                                    </span>
+
+                                {% endif %}
+
+                                <!-- Category Badge -->
+
+                                <span class="badge bg-primary me-2">
+
+                                    {{ task.category }}
+
+                                </span>
+
+                                <!-- Due Date -->
+
+                                {% if task.due_date %}
+
+                                    {% if not task.completed and task.due_date < today %}
+
+                                        <span class="badge bg-danger">
+
+                                            Overdue:
+                                            {{ task.due_date.strftime('%d %b %Y') }}
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-secondary">
+
+                                            Due:
+                                            {{ task.due_date.strftime('%d %b %Y') }}
+
+                                        </span>
+
+                                    {% endif %}
+
+                                {% endif %}
+
+                            </div>
+
+                            <!-- Right Section -->
+
+                            <div class="col-lg-4">
+
+                                <div class="d-flex justify-content-lg-end mt-3 mt-lg-0 gap-2 flex-wrap">
+
+                                    <!-- Complete Button -->
+
+                                    {% if not task.completed %}
+
+                                    <a
+                                        href="{{ url_for('routes.complete_task', task_id=task.id) }}"
+                                        class="btn btn-success btn-sm">
+
+                                        ✓ Complete
+
+                                    </a>
+
+                                    {% else %}
+
+                                    <a
+                                        href="{{ url_for('routes.complete_task', task_id=task.id) }}"
+                                        class="btn btn-outline-secondary btn-sm">
+
+                                        Undo
+
+                                    </a>
+
+                                    {% endif %}
+
+                                    <!-- Edit -->
+
+                                    <a
+                                        href="{{ url_for('routes.edit_task', task_id=task.id) }}"
+                                        class="btn btn-warning btn-sm">
+
+                                        Edit
+
+                                    </a>
+
+                                    <!-- Delete -->
+
+                                    <a
+                                        href="{{ url_for('routes.delete_task', task_id=task.id) }}"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Delete this task?');">
+
+                                        Delete
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+            <!-- Empty State -->
+
+            <div class="card shadow border-0">
+
+                <div class="card-body text-center py-5">
+
+                    <div class="display-1 mb-3">
+
+                        📝
+
+                    </div>
+
+                    <h3>
+
+                        No Tasks Yet
+
+                    </h3>
+
+                    <p class="text-muted">
+
+                        Create your first task using the form above and start
+                        organizing your day.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+

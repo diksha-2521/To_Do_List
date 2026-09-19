@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<div class="row align-items-center mt-5">
+
+<div class="col-lg-6">
+
+<h1 class="display-4 fw-bold">
+
+Organize your day.
+
+</h1>
+
+<p class="lead mt-4">
+
+Manage your daily tasks from anywhere with a clean,
+fast and secure todo manager.
+
+</p>
+
+<div class="mt-4">
+
+<a href="{{ url_for('routes.register') }}"
+class="btn btn-primary btn-lg">
+
+Get Started
+
+</a>
+
+<a href="{{ url_for('routes.login') }}"
+class="btn btn-outline-secondary btn-lg ms-2">
+
+Login
+
+</a>
+
+</div>
+
+</div>
+
+<div class="col-lg-6 text-center">
+
+<img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=900"
+class="img-fluid rounded shadow">
+
+</div>
+
+</div>
+
+{% endblock %}
